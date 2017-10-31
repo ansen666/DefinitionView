@@ -23,9 +23,9 @@ public class MyView extends View{
 
     private Paint paint;//画笔
 
-    private RectF rectF=new RectF(150,150,380,380);
+    private RectF rectF=new RectF(190,190,380,380);
     private int sweepAngle=0;//弧的当前度数
-    private int sweepAngleAdd=0;//弧每次增加度数
+    private int sweepAngleAdd=20;//弧每次增加度数
     private Random random=new Random();
     private boolean running=true;//控制循环
 
@@ -46,7 +46,6 @@ public class MyView extends View{
         typedArray.recycle();
 
         paint=new Paint();
-        paint.setTextSize(60);
     }
 
     @Override
@@ -103,26 +102,26 @@ public class MyView extends View{
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // 获得它的父容器为它设置的测量模式和大小
-        int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int measuredHeight = MeasureSpec.getSize(heightMeasureSpec);
-        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
-        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
+        //获得它的父容器为它设置的测量模式和大小
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 
-        if(modeWidth==MeasureSpec.EXACTLY){//指定宽度/match_parent
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        }else if(modeWidth==MeasureSpec.AT_MOST){//指定为WRAP_CONTENT时
-            measuredWidth=380;
+        int width;
+        int height ;
+        if (widthMode == MeasureSpec.EXACTLY){//指定宽度或者match_parent
+            width = widthSize;
+        } else{
+            width = (int) (getPaddingLeft() + getPaddingRight() + rectF.width()*2);
         }
 
-        if(modeHeight==MeasureSpec.EXACTLY){//指定高度/match_parent
-
-        }else if(modeHeight==MeasureSpec.AT_MOST){//指定为WRAP_CONTENT时
-            measuredHeight=380;
+        if (heightMode == MeasureSpec.EXACTLY){//指定高度或者match_parent
+            height = heightSize;
+        } else{
+            height = (int) (getPaddingTop()+getPaddingBottom()+rectF.height()*2);
         }
-
-        setMeasuredDimension(measuredWidth,measuredHeight);
-        Log.i("MyView","onMeasure");
+        setMeasuredDimension(width, height);
     }
 }
